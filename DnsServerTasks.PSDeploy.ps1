@@ -26,7 +26,7 @@ if ($env:BHBranchName -eq 'master' -and $env:NugetApiKey) {
         "`t* You are in a known build system (Current: $env:BHBuildSystem)`n" +
         "`t* You are committing to the master branch (Current: $env:BHBranchName) `n" +
         "`t* The NugetApiKey is known (value as bool is '$([bool]$env:NugetApiKey)') `n" +
-        "`t* Module path is valid (Current: )" |
+        "`t* Module path is valid (Current: $env:BHModulePath)" |
         Write-Host
 
         Deploy Module {
@@ -34,8 +34,7 @@ if ($env:BHBranchName -eq 'master' -and $env:NugetApiKey) {
                 FromSource "$($env:BHBuildOutput)\Modules\$($env:BHProjectName)"
                 To $env:NugetFeed
                 WithOptions @{
-                    ApiKey = $env:NugetApiKey
-                    Force  = $true
+                    ApiKey  = $env:NugetApiKey
                 }
             }
         }
