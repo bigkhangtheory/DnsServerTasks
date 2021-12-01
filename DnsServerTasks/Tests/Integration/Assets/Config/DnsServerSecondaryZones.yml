@@ -1,0 +1,13 @@
+SecondaryZones:
+  # Name
+  #
+  # Name of the AD DNS zone
+  - Name: mapcom.local
+    MasterServers:
+      - 10.101.1.251
+    Ensure: Present
+
+  - Name: dchoice.com
+    MasterServers:
+      - 10.101.1.251
+    Ensure: Present

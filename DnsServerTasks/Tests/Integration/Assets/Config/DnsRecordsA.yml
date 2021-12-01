@@ -1,0 +1,22 @@
+﻿DnsServer: ns1.example.com
+ForwardLookupZones:
+  - ZoneName: example.com
+    ZoneTTL:  00:15:00
+    Records:
+      # ---
+      - Name:         server1
+        IPv4Address:  192.168.1.2
+      # ---
+      - Name:         server2
+        IPv4Address:  192.168.1.3
+        TimeToLive:   00:05:00
+
+  - ZoneName: bigkhangtheory.io
+    ZoneTTL:  01:00:00
+    Records:
+      # ---
+      - Name:         server3
+        IPv4Address:  192.168.2.2
+      # ---
+      - Name:         server4
+        IPv4Address:  192.168.2.3

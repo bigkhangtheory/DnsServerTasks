@@ -1,0 +1,24 @@
+ForwardLookupZones:
+  - ZoneName: example.com
+    ZoneTTL:  01:00:00
+    Records:
+      # ---
+      - DomainName: example.com
+        NameServers:
+          - ns1.example.com
+          - ns2.example.com
+      # ---
+      - DomainName: "*.example.com"
+        TimeToLive: 00:30:00
+        NameServers:
+          - ns1.example.com
+          - ns2.example.com
+  # ---
+  - ZoneName: bigkhangtheory.io
+    ZoneTTL:  01:00:00
+    Records:
+      # ---
+      - DomainName: bigkhangtheory.io
+        NameServers:
+          - ns1.example.com
+          - ns2.example.com

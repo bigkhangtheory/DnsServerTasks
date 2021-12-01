@@ -1,4 +1,4 @@
-# ActiveDirectoryTasks
+# DnsServerTasks
 
 Windows PowerShell Desired State Configuration (DSC) provides a configuration platform that is based on open standards. This repo provides a structured project for building re-usable and composable **DSC Configurations** *(DSC Composite Resources)* used to manage and configure Windows Server DNS Server.
 
@@ -78,9 +78,9 @@ CompositeResourceName
 │   │   localhost_Configuration2.mof
 │   │   localhost_Configuration3.mof
 │   │   localhost_ConfigurationN.mof
-│   │ 
+│   │
 │   ├───Modules
-│   │ 
+│   │
 │   └───Pester
 │           IntegrationTestResults.xml
 │
@@ -148,8 +148,8 @@ Within that second layer, the Configuration looks like a standard module with so
 
 ### Configuration Data
 
-The configuration data, IMO, should be managed in an 'override-only' way to preserve the cattle vs pet case. That is: 
-- everything is standard (the standard/best practice data being shared alongside the configuration script), 
+The configuration data, IMO, should be managed in an 'override-only' way to preserve the cattle vs pet case. That is:
+- everything is standard (the standard/best practice data being shared alongside the configuration script),
 - but can be overriden in specific cases when required (overriding a domain name, certificate and so on).
 
 This cannot be done out of the box (without tooling), but it's possible using custom scripts or module, as I intend to with the [Datum](https://github.com/gaelcolas/datum) module.
@@ -193,7 +193,7 @@ Set-Alias -Name ConfigData -value Resolve-DscConfigurationData
 Set-Alias -Name DscProperty -value Resolve-DscConfigurationData
 ```
 
-This Allows to resolve static data so that: 
+This Allows to resolve static data so that:
 ```PowerShell
 DscProperty -Node @{
         NodeName='localhost';
@@ -214,7 +214,7 @@ In this example, I'm illustrating the idea with:
 - a Build/ folder, which includes the minimum tasks to bootstrap + custom ones
 - the .gitignore where folders like BuildOutput or kitchen specific files are added (`module/`)
 - the [PSDepend.Build.psd1](./PSDepend.Build.ps1), so that the build process can use [PSDepend](https://github.com/RamblingCookieMonster/PSDepend/) to pull any prerequisites to build this project
-- the Gitlab runner configuration file 
+- the Gitlab runner configuration file
 
 
 ## Configuration Module Folder

@@ -1,0 +1,6 @@
+LockingPercent: 100
+MaxKBSize: 0
+MaxNegativeTtl: "00:15:00"
+MaxTtl: "1.00:00:00"
+EnablePollutionProtection: true
+StoreEmptyAuthenticationResponse: true

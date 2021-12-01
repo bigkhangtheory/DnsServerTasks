@@ -1,0 +1,26 @@
+﻿DnsServer: ns1.example.com
+ForwardLookupZones:
+  - ZoneName: example.com
+    ZoneTTL:  01:00:00
+    Records:
+      # ---
+      - EmailDomain:  example.com
+        MailExchange: smtp1.example.com
+        Priority:     10
+      # ---
+      - EmailDomain:  "*.example.com"
+        MailExchange: smtp2.example.com
+        Priority:     100
+
+  - ZoneName: bigkhangtheory.io
+    ZoneTTL:  1.00:00:00
+    Records:
+      # ---
+      - EmailDomain:  bigkhangtheory.io
+        MailExchange: smtp1.bigkhangtheory.io
+        Priority:     10
+      # ---
+      - EmailDomain:  "*.bigkhangtheory.io"
+        MailExchange: smtp2.bigkhangtheory.io
+        Priority:     100
+        TimeToLive:   15.00:00:00

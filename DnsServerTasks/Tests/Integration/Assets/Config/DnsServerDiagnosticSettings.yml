@@ -1,0 +1,30 @@
+﻿Answers: true
+EnableLogFileRollover: true
+EnableLoggingForLocalLookupEvent: true
+EnableLoggingForPluginDllEvent: true
+EnableLoggingForRecursiveLookupEvent: true
+EnableLoggingForRemoteServerEvent: true
+EnableLoggingForServerStartStopEvent: true
+EnableLoggingForTombstoneEvent: true
+EnableLoggingForZoneDataWriteEvent: true
+EnableLoggingForZoneLoadingEvent: true
+EnableLoggingToFile: True
+EventLogLevel: 4
+FilterIPAddressList:
+  - 10.101.1.11
+  - 10.101.1.12
+FullPackets: false
+LogFilePath: C:\Windows\System32\dns\dnsdiag.log
+MaxMBFileSize: 500000000
+Notifications: true
+Queries: true
+QuestionTransactions: true
+ReceivePackets: false
+SaveLogsToPersistentStorage: true
+SendPackets: false
+TcpPackets: false
+UdpPackets: false
+UnmatchedResponse: false
+Update: true
+UseSystemEventLog: true
+WriteThrough: true

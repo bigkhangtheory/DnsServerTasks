@@ -1,0 +1,22 @@
+﻿DnsServer: ns1.example.com
+ForwardLookupZones:
+  - ZoneName: example.com
+    ZoneTTL:  01:00:00
+    Records:
+      # ---
+      - Name:       alias1
+        HostAlias:  server1.example.com
+      # ---
+      - Name:       alias2
+        HostAlias:  server2.example.com
+
+  - ZoneName: bigkhangtheory.io
+    ZoneTTL:  00:20:00
+    Records:
+      # ---
+      - Name:       alias3
+        HostAlias:  server3.bigkhangtheory.io
+        TimeToLive: 00:05:00
+      # ---
+      - Name:       alias4
+        HostAlias:  server4.bigkhangtheory.io

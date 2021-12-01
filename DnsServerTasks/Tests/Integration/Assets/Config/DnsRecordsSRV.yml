@@ -1,0 +1,53 @@
+ForwardLookupZones:
+  - ZoneName: example.com
+    ZoneTTL:  00:05:00
+    Records:
+      # ---
+      - SymbolicName: _gc
+        Protocol:     tcp
+        Port:         3268
+        Target:       ns1.example.com
+        Priority:     0
+        Weight:       100
+      # ---
+      - SymbolicName: _kerberos
+        Protocol:     tcp
+        Port:         88
+        Target:       ns1.example.com
+        Priority:     0
+        Weight:       100
+      # ---
+      - SymbolicName: _kerberos
+        Protocol:     udp
+        Port:         88
+        Target:       ns1.example.com
+        Priority:     0
+        Weight:       100
+      # ---
+      - SymbolicName: _kpasswd
+        Protocol:     tcp
+        Port:         464
+        Target:       ns1.example.com
+        Priority:     0
+        Weight:       100
+      # ---
+      - SymbolicName: _kpasswd
+        Protocol:     udp
+        Port:         464
+        Target:       ns1.example.com
+        Priority:     0
+        Weight:       100
+      # ---
+      - SymbolicName: _ldap
+        Protocol:     tcp
+        Port:         389
+        Target:       ns1.example.com
+        Priority:     0
+        Weight:       100
+      # ---
+      - SymbolicName: ldaps
+        Protocol:     tcp
+        Port:         636
+        Target:       ns1.example.com
+        Priority:     0
+        Weight:       100

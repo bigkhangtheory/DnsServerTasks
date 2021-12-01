@@ -1,0 +1,21 @@
+DnsServer: ns1.example.com
+ReverseLookupZones:
+  - ZoneName: 1.168.192.in-addr.arpa
+    Records:
+      # ---
+      - IPAddress:  192.168.1.2
+        Name:         server1
+      # ---
+      - IPAddress:  192.168.1.3
+        Name:         server2
+        TimeToLive:   00:05:00
+
+  - ZoneName: 2.168.192.in-addr.arpa
+    ZoneTTL:  01:00:00
+    Records:
+      # ---
+      - IPAddress:  192.168.2.2
+        Name:         server3
+      # ---
+      - IPAddress:  192.168.2.3
+        Name:         server4
