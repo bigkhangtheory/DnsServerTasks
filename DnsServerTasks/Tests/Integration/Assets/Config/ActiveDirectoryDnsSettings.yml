@@ -1,0 +1,6 @@
+﻿DirectoryPartitionAutoEnlistInterval: '1.00:00:00'
+LazyUpdateInterval: 3
+MinimumBackgroundLoadThreads: 1
+PollingInterval: 180
+RemoteReplicationDelay: 30
+TombstoneInterval: '14.00:00:00'
