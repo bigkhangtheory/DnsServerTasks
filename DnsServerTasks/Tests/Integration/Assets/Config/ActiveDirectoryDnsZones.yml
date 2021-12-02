@@ -1,80 +1,29 @@
+DynamicUpdate: NonSecureAndSecure
 ForwardLookupZones:
-  - Name: mapcom.local
-    DynamicUpdate: NonSecureAndSecure
-    ReplicationScope: Legacy
-    Ensure: Present
+  - Scope: Legacy
+    ZoneNames:
+      - mapcom.local
+      - admin.internal
+      - dchoice.local
+      - dev.db
+      - dev.internal
+      - dev1.db
+      - dev3.db
+      - internal
 
-  - Name: admin.internal
-    DynamicUpdate: NonSecureAndSecure
-    ReplicationScope: Legacy
-    Ensure: Present
-
-  - Name: cm.lab
-    DynamicUpdate: NonSecureAndSecure
-    Ensure: Present
-
-  - Name: comsol-pic.com
-    DynamicUpdate: NonSecureAndSecure
-    Ensure: Present
-
-  - Name: cs.signius.com
-    DynamicUpdate: NonSecureAndSecure
-    Ensure: Present
-
-  - Name: dchoice.local
-    DynamicUpdate: NonSecureAndSecure
-    ReplicationScope: Legacy
-    Ensure: Present
-
-  - Name: dev.db
-    DynamicUpdate: NonSecureAndSecure
-    ReplicationScope: Legacy
-    Ensure: Present
-
-  - Name: dev.internal
-    DynamicUpdate: NonSecureAndSecure
-    ReplicationScope: Legacy
-    Ensure: Present
-
-  - Name: dev1.db
-    DynamicUpdate: NonSecureAndSecure
-    ReplicationScope: Legacy
-    Ensure: Present
-
-  - Name: dev3.db
-    DynamicUpdate: NonSecureAndSecure
-    ReplicationScope: Legacy
-    Ensure: Present
-
-  - Name: dev4.db
-    DynamicUpdate: NonSecureAndSecure
-    ReplicationScope: Legacy
-    Ensure: Present
-
-  - Name: dev5.db
-    DynamicUpdate: NonSecureAndSecure
-    ReplicationScope: Legacy
-    Ensure: Present
-
-  - Name: icanhazip.com
-    DynamicUpdate: NonSecureAndSecure
-    Ensure: Present
-
-  - Name: internal
-    DynamicUpdate: NonSecureAndSecure
-    ReplicationScope: Legacy
-    Ensure: Present
-
-  - Name: mapcom.kube
-    DynamicUpdate: NonSecureAndSecure
-    Ensure: Present
+  - Scope: Domain
+    ZoneNames:
+      - cm.lab
+      - comsol-pic.com
+      - client4.signius.com
+      - cs.signius.com
 
 ReverseLookupZones:
     # NAS VRF
-  - +10.51.0.0/16
+  - 10.51.0.0/16
 
     # Windows VRF
-  - +10.101.0.0/16
+  - 10.101.0.0/16
 
     # Management VRF
   - +10.160.0.0/16
