@@ -1,0 +1,11 @@
+﻿Zones:
+  - Name: mapcom.local
+    Type: Any
+    SecondaryServer:
+      - 10.101.1.21
+      - 10.101.1.22
+  - Name: client4.signious.com
+    Type: Any
+    SecondaryServer:
+      - 10.101.1.21
+      - 10.101.1.22
