@@ -52,6 +52,8 @@
     PSDeploy              = 'latest'
     # Module to simplify PowerShell based deployments
 
+    'Indented.Net.Ip'     = '6.2.0'
+    # A collection of commands written to perform IPv4 subnet math.
 
     # -------------------------------------------------------------------------
     # DSC Resources

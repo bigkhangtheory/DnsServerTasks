@@ -12,7 +12,15 @@ task SetPsModulePath {
     $resourcePath = Join-Path -Path $ProjectPath -ChildPath $ResourcesFolder
     $buildModulesPath = Join-Path -Path $BuildOutput -ChildPath Modules
 
-    $moduleToLeaveLoaded = 'InvokeBuild', 'PSReadline', 'PackageManagement', 'ISESteroids', 'PowerShellGet'
+    $moduleToLeaveLoaded = @(
+        'InvokeBuild',
+        'PSReadline',
+        'PackageManagement',
+        'ISESteroids',
+        'PowerShellGet',
+        'Indented.Net.IP'
+    )
+
     $pathToSet = $buildModulesPath #, $env:BHBuildOutput
     if ($env:BHBuildSystem -eq 'AppVeyor')
     {

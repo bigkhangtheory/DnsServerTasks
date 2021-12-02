@@ -1,20 +1,113 @@
-# ActiveDirectoryZones
-#
-# A list of AD integrated zones on a Domain Name System (DNS) server.
+ForwardLookupZones:
+  - Name: mapcom.local
+    DynamicUpdate: NonSecureAndSecure
+    ReplicationScope: Legacy
+    Ensure: Present
 
-Zones:
-  # Name
-  #
-  # Name of the AD DNS zone
-- Name: mapcom.local
-  # DynamicUpdate
-  #
-  # AD zone dynamic DNS update option.
-  DynamicUpdate: Secure
-  # ReplicationScope
-  #
-  # AD zone replication scope option.
-  ReplicationScope: Forest
-- Name: 30.168.192.in-addr.arpa
-  DynamicUpdate: Secure
-  ReplicationScope: Forest
+  - Name: admin.internal
+    DynamicUpdate: NonSecureAndSecure
+    ReplicationScope: Legacy
+    Ensure: Present
+
+  - Name: cm.lab
+    DynamicUpdate: NonSecureAndSecure
+    Ensure: Present
+
+  - Name: comsol-pic.com
+    DynamicUpdate: NonSecureAndSecure
+    Ensure: Present
+
+  - Name: cs.signius.com
+    DynamicUpdate: NonSecureAndSecure
+    Ensure: Present
+
+  - Name: dchoice.local
+    DynamicUpdate: NonSecureAndSecure
+    ReplicationScope: Legacy
+    Ensure: Present
+
+  - Name: dev.db
+    DynamicUpdate: NonSecureAndSecure
+    ReplicationScope: Legacy
+    Ensure: Present
+
+  - Name: dev.internal
+    DynamicUpdate: NonSecureAndSecure
+    ReplicationScope: Legacy
+    Ensure: Present
+
+  - Name: dev1.db
+    DynamicUpdate: NonSecureAndSecure
+    ReplicationScope: Legacy
+    Ensure: Present
+
+  - Name: dev3.db
+    DynamicUpdate: NonSecureAndSecure
+    ReplicationScope: Legacy
+    Ensure: Present
+
+  - Name: dev4.db
+    DynamicUpdate: NonSecureAndSecure
+    ReplicationScope: Legacy
+    Ensure: Present
+
+  - Name: dev5.db
+    DynamicUpdate: NonSecureAndSecure
+    ReplicationScope: Legacy
+    Ensure: Present
+
+  - Name: icanhazip.com
+    DynamicUpdate: NonSecureAndSecure
+    Ensure: Present
+
+  - Name: internal
+    DynamicUpdate: NonSecureAndSecure
+    ReplicationScope: Legacy
+    Ensure: Present
+
+  - Name: mapcom.kube
+    DynamicUpdate: NonSecureAndSecure
+    Ensure: Present
+
+ReverseLookupZones:
+    # NAS VRF
+  - +10.51.0.0/16
+
+    # Windows VRF
+  - +10.101.0.0/16
+
+    # Management VRF
+  - +10.160.0.0/16
+
+    # Private VRF
+  - +10.170.0.0/16
+
+    # Public VRF
+  - +10.180.0.0/16
+
+    # DEVNET
+  - +10.190.0.0/16
+
+    # Headquarters - Chesapeake
+  - +10.200.0.0/20
+
+    # Remote Site - Nashville
+  - +10.200.16.0/20
+
+    # Remote Site - Signius
+  - +10.200.224.0/20
+
+    # CM VRF
+  - +10.254.0.0/16
+
+    # CM LAB
+  - +172.16.96.0/20
+
+    # Legacy Chesapeake - Server
+  - +172.16.0.0/20
+
+    # Legacy Chesapeake - Back Office
+  - +172.16.16.0/20
+
+    # Legacy Remote Site - Mobile
+  - -172.18.19.0/24
