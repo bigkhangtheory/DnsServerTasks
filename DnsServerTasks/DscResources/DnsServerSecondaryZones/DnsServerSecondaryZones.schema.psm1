@@ -50,7 +50,12 @@ configuration DnsServerSecondaryZones
         Write-Host "Ensure = $($s.Ensure)"
 
         # remove case sensitivity for ordered Dictionary and Hashtables
-        #$s = @{ } + $s
+        $s = @{ } + $s
+
+        if (-not $s.ContainsKey('Ensure'))
+        {
+            $s.Ensure = 'Present'
+        }
 
         $executionName = "$($s.Name -replace '[-().:\s]', '_')_$($s.MasterServers -replace '[-().:\s]', '_')"
 
