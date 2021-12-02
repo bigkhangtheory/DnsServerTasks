@@ -40,94 +40,46 @@
 
     .EXAMPLE
     {
-        "ForwardLookupZones":  [
-            {
-                "ReplicationScope":  "Legacy",
-                "Name":  "mapcom.local",
-                "Ensure":  "Present"
-            },
-            {
-                "ReplicationScope":  "Legacy",
-                "Name":  "admin.internal",
-                "Ensure":  "Present"
-            },
-            {
-                "Ensure":  "Present",
-                "Name":  "cm.lab"
-            },
-            {
-                "Ensure":  "Present",
-                "Name":  "comsol-pic.com"
-            },
-            {
-                "Ensure":  "Present",
-                "Name":  "cs.signius.com"
-            },
-            {
-                "ReplicationScope":  "None",
-                "Name":  "dchoice.local",
-                "Ensure":  "Present"
-            },
-            {
-                "ReplicationScope":  "Legacy",
-                "Name":  "dev.db",
-                "Ensure":  "Present"
-            },
-            {
-                "ReplicationScope":  "Legacy",
-                "Name":  "dev.internal",
-                "Ensure":  "Present"
-            },
-            {
-                "ReplicationScope":  "Legacy",
-                "Name":  "dev1.db",
-                "Ensure":  "Present"
-            },
-            {
-                "ReplicationScope":  "Legacy",
-                "Name":  "dev3.db",
-                "Ensure":  "Present"
-            },
-            {
-                "ReplicationScope":  "Legacy",
-                "Name":  "dev4.db",
-                "Ensure":  "Present"
-            },
-            {
-                "ReplicationScope":  "Legacy",
-                "Name":  "dev5.db",
-                "Ensure":  "Present"
-            },
-            {
-                "Ensure":  "Present",
-                "Name":  "icanhazip.com"
-            },
-            {
-                "ReplicationScope":  "Legacy",
-                "Name":  "internal",
-                "Ensure":  "Present"
-            },
-            {
-                "Ensure":  "Present",
-                "Name":  "mapcom.kube"
-            }
-        ],
-        "ReverseLookupZones":  [
-            "+10.51.0.0/16",
-            "+10.101.0.0/16",
-            "+10.160.0.0/16",
-            "+10.170.0.0/16",
-            "+10.180.0.0/16",
-            "+10.190.0.0/16",
-            "+10.200.0.0/20",
-            "+10.200.16.0/20",
-            "+10.200.224.0/20",
-            "+10.254.0.0/16",
-            "+172.16.96.0/20",
-            "+172.16.0.0/20",
-            "+172.16.16.0/20",
-            "-172.18.19.0/24"
-        ],
+    "ReverseLookupZones": [
+        "10.51.0.0/16",
+        "10.101.0.0/16",
+        "+10.160.0.0/16",
+        "+10.170.0.0/16",
+        "+10.180.0.0/16",
+        "+10.190.0.0/16",
+        "+10.200.0.0/20",
+        "+10.200.16.0/20",
+        "+10.200.224.0/20",
+        "+10.254.0.0/16",
+        "+172.16.96.0/20",
+        "+172.16.0.0/20",
+        "+172.16.16.0/20",
+        "-172.18.19.0/24"
+    ],
+    "ForwardLookupZones": [
+        {
+        "Scope": "Legacy",
+        "ZoneNames": [
+            "mapcom.local",
+            "admin.internal",
+            "dchoice.local",
+            "dev.db",
+            "dev.internal",
+            "dev1.db",
+            "dev3.db",
+            "internal"
+        ]
+        },
+        {
+        "Scope": "Domain",
+        "ZoneNames": [
+            "cm.lab",
+            "comsol-pic.com",
+            "client4.signius.com",
+            "cs.signius.com"
+        ]
+        }
+    ]
     }
 
     .INPUTS
@@ -165,6 +117,11 @@ configuration ActiveDirectoryDnsZones
 {
     param
     (
+        [Parameter()]
+        [ValidateSet('None', 'NonSecureAndSecure', 'Secure')]
+        [System.String]
+        $DynamicUpdate,
+
         [Parameter()]
         [ValidateNotNullOrEmpty()]
         [System.Collections.Hashtable[]]
@@ -204,77 +161,78 @@ configuration ActiveDirectoryDnsZones
     #>
     foreach ($f in $ForwardLookupZones)
     {
+        # hashtable for building parameters
+        $params = @{}
+
         # remove case sensitivity of ordered Dictionary or Hashtable
         $f = @{ } + $f
 
-        # this DNS forward lookup zone must have a name
-        if (-not $f.ContainsKey('Name'))
+        # if 'DynamicUpdate' not specified, set default
+        if (-not $PSBoundParameters.ContainsKey('DynamicUpdate'))
         {
-            throw 'ERROR: The Name property is not found.'
+            $params.DynamicUpdate = 'NonSecureAndSecure'
+        }
+        else
+        {
+            $params.DynamicUpdate = $DynamicUpdate
         }
 
-
-        # if 'DynamicUpdate' not specified, default to 'NonSecureAndSecure'
-        if (-not $f.ContainsKey('DynamicUpdate'))
+        # set the replication scope of the zone
+        if (-not $f.ContainsKey('Scope'))
         {
-            $f.DynamicUpdate = 'NonSecureAndSecure'
+            throw 'ERROR: The property Scope is not defined.'
+        }
+        else
+        {
+            $params.ReplicationScope = $f.Scope
         }
 
-
-
-        # if 'ReplicationScope' not specified, default to 'Domain'
-        if (-not $f.ContainsKey('ReplicationScope'))
+        # the property 'ZoneName' must be specified, otherwise fail
+        if (-not $f.ContainsKey('ZoneNames'))
         {
-            $f.ReplicationScope = 'Domain'
+            throw 'ERROR: The property ZoneNames is not defined.'
         }
 
-
-
-        # if not specified, ensure present
-        if (-not $f.ContainsKey('Ensure'))
+        # enumerate all zone names
+        foreach ($z in $f.ZoneNames)
         {
-            $f.Ensure = 'Present'
-        }
+            # assign the zone name
+            $params.Name = $z
 
-        # this resource depends on installation of DNS Server
-        $f.DependsOn = $dependsOnRsatDnsServer
+            # ensure the resource is Present
+            $params.Ensure = 'Present'
 
-        # create execution name for the resource
-        $executionName = "$("$($f.Name)_$($f.DynamicUpdate)_$($f.ReplicationScope)" -replace '[()-.:\s]', '_')"
+            # this resource depends on installation of Dns Server
+            $params.DependsOn = $dependsOnRsatDnsServer
 
-        $object = @"
+            # create execution name for the resource
+            $executionName = "$("$($params.Name)_$($params.DynamicUpdate)_$($params.ReplicationScope)" -replace '[()-.:\s]', '_')"
+
+            $object = @"
 
         Creating DSC resource for DnsServerADZone with the following values:
 
             DnsServerADZone $($executionName)
             {
-                Name                = '$($f.Name)'
-                DynamicUpdate       = '$($f.DynamicUpdate)'
-                ReplicationScope    = '$($f.ReplicationScope)'
-                Ensure              = '$($f.Ensure)'
-                DependsOn           = '$($f.DependsOn)'
+                Name                = '$($params.Name)'
+                DynamicUpdate       = '$($params.DynamicUpdate)'
+                ReplicationScope    = '$($params.ReplicationScope)'
+                Ensure              = '$($params.Ensure)'
+                DependsOn           = '$($params.DependsOn)'
             }
 
 "@
-        Write-Host "$object" -ForegroundColor Yellow
 
+            Write-Host "$object" -ForegroundColor Yellow
 
-
-
-        $Splatting = @{
-            ResourceName  = 'DnsServerADZone'
-            ExecutionName = $executionName
-            Properties    = $f
-            NoInvoke      = $true
-        }
-        try
-        {
-            (Get-DscSplattedResource @Splatting).Invoke($f)
-        }
-        catch
-        {
-            throw 'ERROR: Failed to compile MOF document.'
-        }
-
+            # create DSC resource for DNS Server zones
+            $Splatting = @{
+                ResourceName  = 'DnsServerADZone'
+                ExecutionName = $executionName
+                Properties    = $params
+                NoInvoke      = $true
+            }
+            (Get-DscSplattedResource @Splatting).Invoke($params)
+        } #end foreach
     } #end foreach
 } #end configuration
