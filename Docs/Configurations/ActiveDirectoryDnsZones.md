@@ -37,7 +37,7 @@ The **ActiveDirectoryDnsZones** DSC configuration manages DNS Active Directory p
 | Parameter     | Attribute  | DataType     | Description                                               | Allowed Values                         |
 | :------------ | :--------- | ------------ | :-------------------------------------------------------- | :------------------------------------- |
 | **Scope**     | *Required* | `[String]`   | AD zone replication scope option.                         | `Custom`, `Domain`, `Forest`, `Legacy` |
-| **ZoneNames** | Key        | `[String[]]` | Specify a list of AD DNS zones for the replication scope. |                                        |
+| **ZoneNames** | *Required* | `[String[]]` | Specify a list of AD DNS zones for the replication scope. |                                        |
 
 ---
 
@@ -49,7 +49,7 @@ The **ActiveDirectoryDnsZones** DSC configuration manages DNS Active Directory p
 | Parameter   | Attribute  | DataType     | Description                                                        | Allowed Values                         |
 | :---------- | :--------- | ------------ | :----------------------------------------------------------------- | :------------------------------------- |
 | **Scope**   | *Required* | `[String]`   | AD zone replication scope option.                                  | `Custom`, `Domain`, `Forest`, `Legacy` |
-| **Subnets** | Key        | `[String[]]` | Specify a list of IP Subnet ranges to create Reverse Lookup Zones. |                                        |
+| **Subnets** | *Required* | `[String[]]` | Specify a list of IP Subnet ranges to create Reverse Lookup Zones. |                                        |
 
 > `Subnets`: The key value can be prefixed with `+` and `-` to ensure whether the Reverse Lookup Zones for the subnet should be `Present` or `Absent` respectively.
 {.is-info}

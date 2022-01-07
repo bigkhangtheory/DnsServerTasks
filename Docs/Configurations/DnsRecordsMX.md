@@ -1,15 +1,15 @@
-﻿# DnsRecordsNS
+﻿# DnsRecordsMX
 
-The **DnsRecordsNS** DSC configuration manages NS DNS records against a specific zone on a Domain Name System (DNS) server.
+The **DnsRecordsMX** DSC configuration manages MX DNS records against a specific zone on a Domain Name System (DNS) server.
 
 <br />
 
 ## Project Information
 |                  |                                                                                                                           |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| **Source**       | https://prod1gitlab.mapcom.local/dsc/configurations/DnsServerTasks/-/tree/master/DnsServerTasks/DscResources/DnsRecordsNS |
+| **Source**       | https://prod1gitlab.mapcom.local/dsc/configurations/DnsServerTasks/-/tree/master/DnsServerTasks/DscResources/DnsRecordsMX |
 | **Dependencies** | [DnsServerDsc][DnsServerDsc], [PSDesiredStateConfiguration][PSDesiredStateConfiguration]                                  |
-| **Resources**    | [DnsRecordNs][DnsRecordNs], [WindowsFeature][WindowsFeature]                                                              |
+| **Resources**    | [DnsRecordMx][DnsRecordMx], [WindowsFeature][WindowsFeature]                                                              |
 
 
 <br />
@@ -18,7 +18,7 @@ The **DnsRecordsNS** DSC configuration manages NS DNS records against a specific
 
 <br />
 
-### Table. Attributes of `DnsRecordsNS`
+### Table. Attributes of `DnsRecordsMX`
 
 | Parameter              | Attribute  | DataType        | Description                                                                                         | Allowed Values |
 | :--------------------- | :--------- | :-------------- | :-------------------------------------------------------------------------------------------------- | :------------- |
@@ -43,45 +43,48 @@ The **DnsRecordsNS** DSC configuration manages NS DNS records against a specific
 
 ##### Table. Attributes of `Records`
 
-| Parameter      | Attribute  | DataType          | Description                                                                                                                                  | Allowed Values                  |
-| :------------- | :--------- | :---------------- | :------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------ |
-| **DomainName** | Key        | `[System.String]` | Specifies the fully qualified DNS domain name for which the NameServer is authoritative. It must be a subdomain the zone or the zone itself. |                                 |
-| **NameServer** | Key        | `[System.String]` | Specifies the name server of a domain as FQDN.                                                                                               |                                 |
-| **TimeToLive** | *Optional* | `[String]`        | Specifies the TimeToLive value of the SRV record. Must be in valid TimeSpan string format `dd.hh:mm:ss`.                                     |                                 |
-| **Ensure**     | *Optional* | `[String]`        | Whether the host record should be present or removed.                                                                                        | `Present` *(default)*, `Absent` |
+| Parameter        | Attribute  | DataType   | Description                                                                                                                                       | Allowed Values                  |
+| :--------------- | :--------- | :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------ | :------------------------------ |
+| **EmailDomain**  | *Required* | `[String]` | Everything after the '@' in the email addresses supported by this mail exchanger. It must be a subdomain the zone or the zone itself.             |                                 |
+| **MailExchange** | *Required* | `[String]` | FQDN of the server handling email for the specified email domain. This FQDN must resolve to an IP address and cannot reference a CNAME record.    |                                 |
+| **Priority**     | *Required* | `[UInt16]` | Specifies the priority for this MX record among other MX records that belong to the same email domain, where a lower value has a higher priority. |                                 |
+| **TimeToLive**   | *Optional* | `[String]` | Specifies the TimeToLive value of the SRV record. Must be in valid TimeSpan string format `dd.hh:mm:ss`.                                          |                                 |
+| **Ensure**       | *Optional* | `[String]` | Whether the host record should be present or removed.                                                                                             | `Present` *(default)*, `Absent` |
 
 ---
 
 <br />
 
-## Example `DnsRecordsNS`
+## Example `DnsRecordsMX`
 
 ```yaml
-DnsRecordsNS:
+DnsRecordsMX:
+  DnsServer: ns1.example.com
   ForwardLookupZones:
     - ZoneName: example.com
       ZoneTTL:  01:00:00
       Records:
         # ---
-        - DomainName: example.com
-          NameServers:
-            - ns1.example.com
-            - ns2.example.com
+        - EmailDomain:  example.com
+          MailExchange: smtp1.example.com
+          Priority:     10
         # ---
-        - DomainName: "*.example.com"
-          TimeToLive: 00:30:00
-          NameServers:
-            - ns1.example.com
-            - ns2.example.com
-    # ---
+        - EmailDomain:  "*.example.com"
+          MailExchange: smtp2.example.com
+          Priority:     100
+
     - ZoneName: bigkhangtheory.io
-      ZoneTTL:  01:00:00
+      ZoneTTL:  1.00:00:00
       Records:
         # ---
-        - DomainName: bigkhangtheory.io
-          NameServers:
-            - ns1.example.com
-            - ns2.example.com
+        - EmailDomain:  bigkhangtheory.io
+          MailExchange: smtp1.bigkhangtheory.io
+          Priority:     10
+        # ---
+        - EmailDomain:  "*.bigkhangtheory.io"
+          MailExchange: smtp2.bigkhangtheory.io
+          Priority:     100
+          TimeToLive:   15.00:00:00
 
 ```
 
@@ -92,25 +95,25 @@ DnsRecordsNS:
 ```yaml
 lookup_options:
 
-  DnsRecordsNS:
+  DnsRecordsMX:
   	merge_hash: deep
-  DnsRecordsNS\ForwardLookupZones:
+  DnsRecordsMX\ForwardLookupZones:
     merge_hash_array: UniqueKeyValTuples
     merge_options:
       tuple_keys:
         - ZoneName
-  DnsRecordsNS\ForwardLookupZones\Records:
+  DnsRecordsMX\ForwardLookupZones\Records:
     merge_hash_array: UniqueKeyValTuples
     merge_options:
       tuple_keys:
-        - DomainName
-  DnsRecordsNS\ForwardLookupZones\Records\NameServers:
-    merge_baseType_array: Unique
+        - EmailDomain
+        - MailExchange
+        - Priority
 ```
 
 <br />
 
 [DnsServerDsc]: https://github.com/dsccommunity/DnsServerDsc
 [PSDesiredStateConfiguration]: https://docs.microsoft.com/en-us/powershell/module/psdesiredstateconfiguration/about/about_classes_and_dsc?view=powershell-7.1
-[DnsRecordNs]: https://github.com/dsccommunity/DnsServerDsc/wiki/DnsRecordNs
+[DnsRecordMx]: https://github.com/dsccommunity/DnsServerDsc/wiki/DnsRecordMx
 [WindowsFeature]: https://docs.microsoft.com/en-us/powershell/scripting/dsc/reference/resources/windows/windowsfeatureresource?view=powershell-7.2

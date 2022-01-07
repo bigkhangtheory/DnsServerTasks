@@ -2,13 +2,14 @@ configuration DnsServerRootHints
 {
     param
     (
-        [hashtable]
+        [Parameter()]
+        [System.Collections.Hashtable]
         $RootHints
     )
 
     Import-DscResource -ModuleName PSDesiredStateConfiguration
     Import-DscResource -ModuleName DnsServerDsc
-    
+
     $param = @{
         IsSingleInstance = 'Yes'
         NameServer       = $RootHints

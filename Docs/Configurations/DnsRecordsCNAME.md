@@ -45,8 +45,8 @@ The **DnsRecordsCNAME** DSC configuration manages CNAME DNS records against a sp
 
 | Parameter      | Attribute  | DataType   | Description                                                                                                | Allowed Values                  |
 | :------------- | :--------- | :--------- | :--------------------------------------------------------------------------------------------------------- | :------------------------------ |
-| **Name**       | Key        | `[String]` | Specifies the name of a DNS server resource record object.                                                 |                                 |
-| **HostAlias**  | Key        | `[String]` | Specifies a a canonical name target for a CNAME record. This must be a fully qualified domain name (FQDN). |                                 |
+| **Name**       | *Required* | `[String]` | Specifies the name of a DNS server resource record object.                                                 |                                 |
+| **HostAlias**  | *Required* | `[String]` | Specifies a a canonical name target for a CNAME record. This must be a fully qualified domain name (FQDN). |                                 |
 | **TimeToLive** | *Optional* | `[String]` | Specifies the TimeToLive value of the SRV record. Must be in valid TimeSpan string format `dd.hh:mm:ss`.   |                                 |
 | **Ensure**     | *Optional* | `[String]` | Whether the host record should be present or removed.                                                      | `Present` *(default)*, `Absent` |
 

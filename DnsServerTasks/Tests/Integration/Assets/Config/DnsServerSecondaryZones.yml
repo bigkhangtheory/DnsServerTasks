@@ -1,11 +1,25 @@
-SecondaryZones:
-  # Name
-  #
-  # Name of the AD DNS zone
-  - Name: mapcom.local
-    MasterServers:
-      - 10.101.1.251
+MasterServers:
+  - 10.101.1.251
+  - 10.101.1.252
+  - 10.101.1.253
+  - 10.101.1.254
+ForwardLookupZones:
+  - mapcom.local
+  - admin.internal
+  - dchoice.local
+  - dev.db
+  - dev.internal
+  - dev1.db
+  - dev3.db
+  - internal
+  - cm.lab
+  - comsol-pic.com
+  - client4.signius.com
+  - cs.signius.com
+  - -dummy.internal
+  - -mapcommapcom.mapcomlocal
+ReverseLookupZones:
+    # Windows VRF
+  - 10.101.0.0/20
 
-  - Name: dchoice.com
-    MasterServers:
-      - 10.101.1.251
+  - -172.18.11.0/24

@@ -306,7 +306,12 @@ configuration DnsServerDiagnosticSettings
 
         [Parameter()]
         [System.Boolean]
-        $WriteThrough
+        $WriteThrough,
+
+        [Parameter()]
+        [System.Management.Automation.PSCredential]
+        [System.Management.Automation.Credential()]
+        $Credential
     )
 
     <#
@@ -418,14 +423,17 @@ configuration DnsServerDiagnosticSettings
         # if DNS Server is the localhost, add resource dependency
         if ($dnsServerInstalled -eq $true)
         {
-            #$dependsOn = $dependsOnRsatDnsServer
+            $params.DependsOn = $dependsOnRsatDnsServer
         }
 
-        # set resource dependencies
-        $params.DependsOn = $dependsOn
+        # if Credential is specified, set PsRunAsCredential
+        if ($PSBoundParameters.ContainsKey('Credential'))
+        {
+            $params.PsDscRunAsCredetnial = $Credential
+        }
 
         # create execution name for the resource
-        $executionName = 'Diagnostics_Settings'
+        $executionName = "Diagnostics_Settings_$("$($params.DnsServer)" -replace '[-().:\s]', '_')"
 
         $object = @"
 
